@@ -51,11 +51,14 @@ services:
     image: nginx
     container_name: nginx
 
+    env_file:
+      - .env
+
     build:
       context: ./requirements/nginx
 
     ports:
-      - "443:443"
+      - "${HOST_PORT}:${HOST_PORT}"
 
     volumes:
       - wordpress_data:/var/www/html:ro
