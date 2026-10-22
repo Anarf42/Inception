@@ -96,7 +96,10 @@ MariaDB data is persisted outside the container.
 From the root of the repository, run:
 
 ```bash
-make
+make env
+make ssh-setup
+make vm-setup
+make all
 ```
 
 Alternatively:
@@ -107,18 +110,22 @@ make up
 
 The command:
 
-- Creates the required data directories.
-- Builds the Docker images.
-- Creates the Docker network.
-- Creates the containers.
-- Mounts the required secrets.
-- Mounts the persistent storage.
-- Starts all services.
+- creates the .env file from the .env.example template
+- generates the SSH key and copy it
+-  downloads and install docker, nginx, mariadb and wordpress
+- creates the persistent data directories
+- builds the images
+- starts the Docker Compose stack
+- open the socks tunnel to connect remotely
 
 Check the running containers with:
 
 ```bash
 docker ps
+
+or
+
+make status
 ```
 
 Three containers should be running:
@@ -200,13 +207,27 @@ MYSQL_DATABASE=wordpress
 MYSQL_USER=wpuser
 MYSQL_HOST=mariadb
 
+LOGIN=anruiz-d
 DOMAIN_NAME=anruiz-d.42.fr
+WP_TITLE=Inception
 
 WP_ADMIN_USER=siteowner
 WP_ADMIN_EMAIL=siteowner@example.com
 
 WP_USER=usuario
 WP_USER_EMAIL=usuario@example.com
+
+SSH_USER=ana
+SSH_HOST=127.0.0.1
+SSH_PORT=4242
+
+SOCKS_PORT=1080
+
+HOST_IP=192.168.56.10
+HOST_PORT=443
+
+LOCAL_IP=127.0.0.1
+LOCAL_PORT=8443
 ```
 
 ---

@@ -129,6 +129,7 @@ MYSQL_DATABASE=wordpress
 MYSQL_USER=wpuser
 MYSQL_HOST=mariadb
 
+LOGIN=anruiz-d
 DOMAIN_NAME=anruiz-d.42.fr
 WP_TITLE=Inception
 
@@ -138,7 +139,17 @@ WP_ADMIN_EMAIL=siteowner@example.com
 WP_USER=usuario
 WP_USER_EMAIL=usuario@example.com
 
-LOGIN=anruiz-d
+SSH_USER=ana
+SSH_HOST=127.0.0.1
+SSH_PORT=4242
+
+SOCKS_PORT=1080
+
+HOST_IP=192.168.56.10
+HOST_PORT=443
+
+LOCAL_IP=127.0.0.1
+LOCAL_PORT=8443
 ```
 
 Passwords must not be stored in `.env`.
@@ -166,6 +177,7 @@ The `.gitignore` contains:
 
 ```text
 secrets/*.txt
+srcs/.env
 ```
 
 A `.gitkeep` file can be kept inside the `secrets` directory so the empty directory exists in the repository.
@@ -191,7 +203,10 @@ This entry can be added to:
 From the project root:
 
 ```bash
-make
+make env
+make ssh-setup
+make vm-setup
+make all
 ```
 
 or:
@@ -200,7 +215,7 @@ or:
 make up
 ```
 
-The Makefile creates the persistent data directories if they do not already exist, builds the images and starts the Docker Compose stack.
+The Makefile creates the .env file from the .env.example template, generates the SSH key and copy it, downloads and install docker, nginx, mariadb and wordpress and with make all, it does the rest that means: creates the persistent data directories if they do not already exist, builds the images, starts the Docker Compose stack and it will open the socks tunnel to connect remotely.
 
 The site can then be accessed at:
 

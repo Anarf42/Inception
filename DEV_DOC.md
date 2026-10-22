@@ -330,8 +330,8 @@ MYSQL_DATABASE=wordpress
 MYSQL_USER=wpuser
 MYSQL_HOST=mariadb
 
+LOGIN=anruiz-d
 DOMAIN_NAME=anruiz-d.42.fr
-
 WP_TITLE=Inception
 
 WP_ADMIN_USER=siteowner
@@ -340,7 +340,17 @@ WP_ADMIN_EMAIL=siteowner@example.com
 WP_USER=usuario
 WP_USER_EMAIL=usuario@example.com
 
-LOGIN=anruiz-d
+SSH_USER=ana
+SSH_HOST=127.0.0.1
+SSH_PORT=4242
+
+SOCKS_PORT=1080
+
+HOST_IP=192.168.56.10
+HOST_PORT=443
+
+LOCAL_IP=127.0.0.1
+LOCAL_PORT=8443
 ```
 
 `LOGIN` is used to avoid hardcoding the login repeatedly in paths and commands.
@@ -537,7 +547,10 @@ The Makefile simplifies the Docker Compose commands.
 ## Start the project
 
 ```bash
-make
+make env
+make ssh-setup
+make vm-setup
+make all
 ```
 
 or:
@@ -548,9 +561,13 @@ make up
 
 This:
 
-1. Creates the persistent directories.
-2. Builds the Docker images.
-3. Starts the Docker Compose stack.
+- creates the .env file from the .env.example template
+- generates the SSH key and copy it
+-  downloads and install docker, nginx, mariadb and wordpress
+- creates the persistent data directories
+- builds the images
+- starts the Docker Compose stack
+- open the socks tunnel to connect remotely
 
 ---
 
@@ -600,6 +617,10 @@ Equivalent to performing a complete cleanup followed by a new build and start.
 
 ```bash
 docker ps
+
+or 
+
+make status
 ```
 
 ## List all containers
